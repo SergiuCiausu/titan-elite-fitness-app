@@ -1,0 +1,1 @@
+export const h1Settings = "font-header font-bold max-md:text-4xl md:text-5xl 3xl:text-[60px] hero-h1-shadow";
