@@ -12,7 +12,10 @@ export default {
   theme: {
     extend: {
       colors: {
-        background: "hsl(var(--background))",
+        background: {
+          DEFAULT: "hsl(var(--background))",
+          75: "var(--background-75)",
+        },
         foreground: {
           DEFAULT: "hsl(var(--foreground-85))",
           hover: "hsl(var(--foreground))",
@@ -43,9 +46,30 @@ export default {
           DEFAULT: "hsl(var(--accent))",
           foreground: "hsl(var(--accent-foreground))",
         },
+        footer: {
+          DEFAULT: "hsl(var(--footer-bg))",
+        },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
           foreground: "hsl(var(--destructive-foreground))",
+        },
+        pilates: {
+          DEFAULT: "hsl(var(--pilates))"
+        },
+        yoga: {
+          DEFAULT: "hsl(var(--yoga))"
+        },
+        bodypump: {
+          DEFAULT: "hsl(var(--bodypump))"
+        },
+        aerobics: {
+          DEFAULT: "hsl(var(--aerobics))"
+        },
+        boxing: {
+          DEFAULT: "hsl(var(--boxing))"
+        },
+        cycling: {
+          DEFAULT: "hsl(var(--cycling))"
         },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -64,7 +88,8 @@ export default {
         sm: "calc(var(--radius) - 4px)",
       },
       fontFamily: {
-        header: ["var(--font-antonio)", "Oswald", "Open Sans", "Helvetica Neue", "Segoe UI", "system-ui", "sans-serif",]
+        header: ["var(--font-antonio)", "Oswald", "Open Sans", "Helvetica Neue", "Segoe UI", "system-ui", "sans-serif",],
+        body: ["var(--body-font)"]
       },
       screens: {
         "3xl": "1921px",

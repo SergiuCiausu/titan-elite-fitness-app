@@ -12,9 +12,9 @@ export function MobileNavBtn() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="w-full">
-      <div className="w-full flex items-center justify-between relative z-10 py-3 px-5">
-        <Link href={"/"} className="logo text-primary">
+    <div className="w-full h-full">
+      <div className="w-full h-full flex items-center justify-between relative z-10 py-3 px-5">
+        <Link href={"/"} className="logo text-primary md:hidden text-sm">
           Titan Elite Fitness
         </Link>
         <button onClick={() => setIsOpen(!isOpen)}>{isOpen ? <X /> : <Menu />}</button>

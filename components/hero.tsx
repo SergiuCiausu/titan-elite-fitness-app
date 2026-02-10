@@ -3,8 +3,9 @@ import { HeroCTA } from "./ui/landing-page/hero/herocta";
 import { HeroHeader } from "./ui/landing-page/hero/heroheader";
 import { HeroPerks } from "./ui/landing-page/hero/heroPerks";
 import { Navbar } from "./ui/landing-page/nav/navbar";
+import { Suspense } from "react";
 
-export function Hero() {
+export async function Hero() {
 
   return (
     <section
@@ -35,7 +36,9 @@ export function Hero() {
             </div>
             <div
               className="absolute max-md:hidden bottom-16">
-                <HeroPerks />
+                <Suspense>
+                  <HeroPerks />
+                </Suspense>
             </div>
         </div>
       </div>

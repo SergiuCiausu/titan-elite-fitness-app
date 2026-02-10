@@ -1,0 +1,1 @@
+export const h3Settings = "font-normal max-md:text-2xl md:text-3xl md:!leading-normal 3xl:text-[36px] text-primary-foreground";

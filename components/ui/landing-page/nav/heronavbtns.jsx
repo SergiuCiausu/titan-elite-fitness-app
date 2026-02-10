@@ -4,7 +4,7 @@ import { Suspense } from "react";
 
 export function HeroNavBtns() {
   return (
-    <div className="flex gap-8 items-center">
+    <div className="flex xl:gap-8 items-center">
       <Suspense>
         <AuthButton />
       </Suspense>

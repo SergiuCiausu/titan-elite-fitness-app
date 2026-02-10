@@ -1,0 +1,1 @@
+export const h2Settings = "max-md:text-3xl md:text-4xl md:!leading-normal 3xl:text-[48px] hero-h1-shadow mt-16";
