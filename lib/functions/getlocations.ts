@@ -1,15 +1,27 @@
 import { SupabaseClient } from "@supabase/supabase-js";
+import { UUID } from "../constants/uuid";
 
-export async function getLocations(supabase: SupabaseClient, { query, search, option }: { query?: string, search?: string, option?: string }) {
+export async function getLocations(supabase: SupabaseClient, { query, search, option, ids }: { query?: string, search?: string, option?: string, ids?: UUID[] }) {
 
-    const baseQuery = supabase.from("Tenants").select("*");
+    let baseQuery;
+
+    if (ids && ids.length > 0) {
+        baseQuery = supabase.from("Tenants").select("*, Tenant_coaches!inner(coach_id)").in("Tenant_coaches.coach_id", ids);
+    } else {
+        baseQuery = supabase.from("Tenants").select("*");
+    }
+    
 
     if (query) {
-        baseQuery
-            .or(`city.ilike.%${query}%,province.ilike.%${query}%,name.ilike.%${query}%`)
-            .or(`city.ilike.%${search}%,province.ilike.%${search}%,name.ilike.%${search}%`)
-            .or(`city_unaccent.ilike.%${query}%,province_unaccent.ilike.%${query}%,name_unaccent.ilike.%${query}%`)
-            .or(`city_unaccent.ilike.%${search}%,province_unaccent.ilike.%${search}%,name_unaccent.ilike.%${search}%`);
+        const searchQuery = `${query || search}`;
+        baseQuery.or(`
+            city.ilike.%${searchQuery}%,
+            province.ilike.%${searchQuery}%,
+            name.ilike.%${searchQuery}%,
+            city_unaccent.ilike.%${searchQuery}%,
+            province_unaccent.ilike.%${searchQuery}%,
+            name_unaccent.ilike.%${searchQuery}%
+        `);
     }
 
     if (option && option !== "all") {

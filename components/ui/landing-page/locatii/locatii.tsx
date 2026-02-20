@@ -5,8 +5,6 @@ import { SectionHeader } from "../components/sectionheader";
 import { SearchProps } from "@/lib/constants/search-props";
 import { LocationsDisplay } from "./components/display-locations";
 import { FormEvent, useEffect, useRef, useState } from "react";
-import { ChevronDown, MapPin } from "lucide-react";
-import { h3Settings } from "@/lib/constants/classes-tw/h3-settings";
 import { Map, MapControls } from "@/components/ui/map";
 import { Card } from "@/components/ui/card";
 import { RomaniaLayer } from "./components/romania-map";
@@ -18,14 +16,39 @@ import { getUserLocation } from "@/lib/functions/getuserlocation";
 import { City } from "@/lib/constants/city-type";
 import { CitySelector } from "../components/selectcity";
 import { getLocations } from "@/lib/functions/getlocations";
+import { romaniaStartingCoords } from "@/lib/constants/romania-starting-coords";
 
-type Coords = {
+export type Coords = {
     lng: number,
     lat: number,
 }
 
+export function ConditionalRomaniaLayer() {
+    const { map, isLoaded } = useMap();
+    const [zoom, setZoom] = useState(0);
+
+    useEffect(() => {
+        if (!map || !isLoaded) return;
+
+        const handleZoom = () => {
+            setZoom(map.getZoom());
+        };
+
+        map.on('zoom', handleZoom);
+        setZoom(map.getZoom());
+
+        return () => {
+            map.off('zoom', handleZoom);
+        };
+    }, [map, isLoaded]);
+
+    if (zoom >= 9.5) return null;
+
+    return <RomaniaLayer />;
+}
+
 export function Locatii({ searchParams }: SearchProps) {
-    const [startingCoords, setStartingCoords] = useState<Coords>({ lng: 24.97, lat: 45.97 });
+    const [startingCoords, setStartingCoords] = useState<Coords>(romaniaStartingCoords);
     const [hasMapLoaded, setHasMapLoaded] = useState(false);
     const [mapZoom, setMapZoom] = useState(6);
     const [query, setQuery] = useState(searchParams?.q ?? '')
@@ -35,7 +58,6 @@ export function Locatii({ searchParams }: SearchProps) {
     const [locations, setLocations] = useState<Location[]>([]);
     const mapRef = useRef<any>(null);
     const [debouncedQuery, setDebouncedQuery] = useState(query);
-    const [debouncedSelected, setDebouncedSelected] = useState(selected);
 
     useEffect(() => {
         const handler = setTimeout(() => {
@@ -44,38 +66,6 @@ export function Locatii({ searchParams }: SearchProps) {
 
         return () => clearTimeout(handler);
     }, [query]);
-
-    useEffect(() => {
-        const handler = setTimeout(() => {
-            setDebouncedSelected(selected)
-        }, 250);
-
-        return () => clearTimeout(handler);
-    }, [selected]);
-
-    function ConditionalRomaniaLayer() {
-        const { map, isLoaded } = useMap();
-        const [zoom, setZoom] = useState(0);
-
-        useEffect(() => {
-            if (!map || !isLoaded) return;
-
-            const handleZoom = () => {
-                setZoom(map.getZoom());
-            };
-
-            map.on('zoom', handleZoom);
-            setZoom(map.getZoom());
-
-            return () => {
-                map.off('zoom', handleZoom);
-            };
-        }, [map, isLoaded]);
-
-        if (zoom >= 9.5) return null;
-
-        return <RomaniaLayer />;
-    }
 
     function setNewMapCoordsAndZoom({ lng, lat, zoom } : { lng: number, lat: number, zoom: number }) {
         if (mapRef.current) {
@@ -105,7 +95,7 @@ export function Locatii({ searchParams }: SearchProps) {
 
         if (!value || locations.length === 0) {
             setNewMapCoordsAndZoom({lng: startingCoords.lng, lat: startingCoords.lat, zoom: 6});
-            setDebouncedSelected("all");
+            setSelected("all");
         }
     }
 
@@ -118,7 +108,7 @@ export function Locatii({ searchParams }: SearchProps) {
             const isSameCity = locations.every(loc => loc.city === first.city);
 
             if (isSameCity) {
-                const center =  countyCenters[first.city] || countyCenters[first.province];
+                const center = countyCenters[first.city] || countyCenters[first.province];
 
                 if (center && mapRef.current) {
                     setNewMapCoordsAndZoom({ lng: center.lng, lat: center.lat, zoom: 11 });
@@ -246,6 +236,7 @@ export function Locatii({ searchParams }: SearchProps) {
 
     return (
         <section
+            id="locatii"
             className="w-full flex flex-col gap-16 items-center justify-center">
             <SectionHeader text={"Locații"} />
             <div
@@ -264,7 +255,7 @@ export function Locatii({ searchParams }: SearchProps) {
                     </div>
                     <div
                         className="flex flex-col gap-4 overflow-y-auto scrollbar-thin scroll-thumb-gray">
-                        <LocationsDisplay query={query} search={search} option={selected} locations={locations} setLocations={setLocations} setSelected={setSelected}/>
+                        <LocationsDisplay query={query} search={search} option={selected} locations={locations} />
                     </div>
                 </div>
                 <div

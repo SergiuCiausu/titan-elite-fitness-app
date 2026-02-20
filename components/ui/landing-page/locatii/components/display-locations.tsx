@@ -1,14 +1,9 @@
-'use client';
-
-import { useEffect, useState} from "react";
 import { Button } from "@/components/ui/button";
 import { MapPin } from "lucide-react";
 import Link from "next/link";
 import { Location } from "@/lib/constants/location-type";
-import { getLocations } from "@/lib/functions/getlocations";
-import { createClient } from "@/lib/supabase/client";
 
-export function LocationsDisplay({ query, search, option, locations, setLocations }: { query: string, search: string, option: string, locations: Location[], setLocations: React.Dispatch<React.SetStateAction<Location[]>>, setSelected: React.Dispatch<React.SetStateAction<string>> }) {
+export function LocationsDisplay({ query, search, option, locations }: { query: string, search: string, option: string, locations: Location[] }) {
 
   const searchTerm = (query || search || "").toLowerCase();
 

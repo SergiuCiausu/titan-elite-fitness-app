@@ -1,0 +1,1 @@
+export const daysOfTheWeek = ["Luni", "Marți", "Miercuri", "Joi", "Vineri", "Sâmbătă", "Duminică"];

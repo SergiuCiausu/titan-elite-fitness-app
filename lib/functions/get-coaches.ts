@@ -1,31 +1,36 @@
+import { UUID } from "../constants/uuid";
 import { createClient } from "../supabase/server";
 
-export type Coach = {
-    user_id: string,
-    first_name: string,
-    last_name: string,
-    Coach_specialties: {
-        coach_id: string,
-        class_type_id: string,
-        Class_types: {
-            id: string,
-            name: string,
-            icon: string
-        }
-    }[],
-    Tenant_coaches: {
-        tenant_id: string,
-        Tenants: {
-            name: string,
-            city: string,
-        }
-    }[]
+export type TenantCoaches = {
+    tenant_id: UUID,
+    Tenants: {
+        name: string,
+        city: string,
+    }
 }
 
-export async function getCoaches(){
+export type CoachSpecialties = {
+    coach_id: UUID,
+    class_type_id: UUID,
+    Class_types: {
+        id: UUID,
+        name: string,
+        icon: string
+    }
+}
+
+export type Coach = {
+    user_id: UUID,
+    first_name: string,
+    last_name: string,
+    Coach_specialties: CoachSpecialties[],
+    Tenant_coaches: TenantCoaches[]
+}
+
+export async function getCoaches({ names }: { names?: string[] } = {}){
     const supabase = await createClient();
 
-    const { data, error } = await supabase
+    const baseQuery = supabase
     .from("Coaches")
     .select(`user_id, first_name, last_name,
         Coach_specialties!inner (
@@ -45,7 +50,13 @@ export async function getCoaches(){
             )
         )        
     `)
-    .order("last_name", { ascending: true }) as { data: Coach[] | null, error: any };
+    .order("last_name", { ascending: true });
+
+    if (names && names.length > 0){
+        baseQuery.in("name_unaccent", names);
+    }
+
+    const { data, error } = await baseQuery as { data: Coach[] | null, error: any };
 
     if (error) throw error;
 

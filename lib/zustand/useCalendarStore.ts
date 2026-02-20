@@ -3,6 +3,7 @@
 import { create } from 'zustand'
 import { immer } from 'zustand/middleware/immer'
 import { ClassSession } from "../constants/class-sessions-type"
+import { hydrateClassStacks } from '../functions/hydrate-class-stacks'
 
 export type Day = {
 	date: string
@@ -30,7 +31,7 @@ export type CalendarState = {
 	removeSession: (sessionId: string) => void
 }
 
-function buildStacks(sessions: ClassSession[]): Stack[] {
+export function buildStacks(sessions: ClassSession[]): Stack[] {
   if (sessions.length === 0) return []
 
   const sorted = [...sessions].sort((a, b) => a.class_starts_at - b.class_starts_at)
@@ -57,7 +58,7 @@ function buildStacks(sessions: ClassSession[]): Stack[] {
   return stacks
 }
 
-function makeSingleStack(sessions: ClassSession[]): Stack {
+export function makeSingleStack(sessions: ClassSession[]): Stack {
   const start = Math.min(...sessions.map(s => s.class_starts_at))
   const end = Math.max(...sessions.map(s => s.class_ends_at))
   const { class_day, class_date, class_month, class_year } = sessions[0]
@@ -78,27 +79,7 @@ export const useCalendarStore = create<CalendarState>()(
 
     hydrate(sessions) {
 
-      const days: Record<string, Day> = {}
-      const stacks: Record<string, Stack> = {}
-      const sessionsMap: Record<string, ClassSession> = {}
-
-      for (const day in sessions) {
-        const daySessions = sessions[day];
-        const dayStacks = buildStacks(daySessions)
-
-        days[day] = {
-          date: day,
-          stackIds: dayStacks.map(s => s.id),
-        }
-
-        for (const stack of dayStacks) {
-          stacks[stack.id] = stack
-        }
-
-        for (const s of daySessions) {
-          sessionsMap[s.id] = s
-        }
-      }
+      const { days, stacks, sessionsMap } = hydrateClassStacks(sessions);
 
       set({ days, stacks, sessions: sessionsMap })
     },

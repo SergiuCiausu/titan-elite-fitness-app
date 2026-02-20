@@ -7,26 +7,26 @@ export type NavLink =
 export const navLinks: NavLink[] = [
     {
         name: "Galerie foto",
-        href: "galerie-foto",
+        href: "#galerie-foto",
     },
     {
         name: "Locații",
-        href: "locatii",
+        href: "#locatii",
     },
     {
         name: "Antrenori",
-        href: "antrenori",
+        href: "#antrenori",
     },
     {
         name: "Clase",
-        href: "clase",
+        href: "#clase",
     },
     {
         name: "Aparate",
-        href: "aparate",
+        href: "#aparate",
     },
     {
         name: "Abonamente",
-        href: "abonamente",
+        href: "#abonamente",
     },
 ];

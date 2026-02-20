@@ -13,9 +13,11 @@ import { YDashLine } from "./components-calendar-display/y-dashed-line";
 import { CalendarDayHeader } from "./components-calendar-display/calendarDayHeader";
 import { StackLayout } from "./components-calendar-display/stackLayout";
 import { SessionLayout } from "./components-calendar-display/sessionLayout";
+import { Coach } from "@/lib/functions/get-coaches";
+import { groupClassesByDate } from "@/lib/functions/group-classes-by-date";
 
 
-export function CalendarClient({ initialLocations, initialCities, initialStartDate, initialEndDate }: { initialLocations: Location[], initialCities: City[], initialStartDate: string, initialEndDate: string }) {
+export function CalendarClient({ initialLocations, initialCities, initialStartDate, initialEndDate, coach }: { initialLocations: Location[], initialCities: City[], initialStartDate: string, initialEndDate: string, coach?: Coach }) {
 
     const locationsBackup = initialLocations;
     const [locations, setLocations] = useState<Location[]>(initialLocations)
@@ -162,7 +164,6 @@ export function CalendarClient({ initialLocations, initialCities, initialStartDa
 
                 if (selectedLocation !== "all") {
                     const found = cityLocations.find(loc => loc.name === selectedLocation);
-                    console.log("na: ", selectedLocation);
                     
                     if (!found) {
                         return [locations.find(location => location.name === selectedLocation)?.id];
@@ -188,15 +189,15 @@ export function CalendarClient({ initialLocations, initialCities, initialStartDa
                 })
             })
 
-            const data = await classesData.json();
+            let data = await classesData.json();
 
-            const sessionsObj: Record<string, ClassSession[]> = {}
-            data.classes.forEach((session: ClassSession) => {
-                if(!sessionsObj[session.class_date]) {
-                    sessionsObj[session.class_date] = [];
-                }
-                sessionsObj[session.class_date].push(session);
-            })
+            if (coach) {
+                data.classes = data.classes.filter((session: ClassSession) => {
+                    return session.coach_first_name === coach.first_name && session.coach_last_name === coach.last_name
+                });
+            }
+
+            const sessionsObj = groupClassesByDate(data.classes);
 
             useCalendarStore.getState().hydrate(sessionsObj)
             setIsLocationsMounted(true);
@@ -233,9 +234,6 @@ export function CalendarClient({ initialLocations, initialCities, initialStartDa
 
         const location = locations.find(location => location.name === e.target.value);
 
-        const newCity = cities.find(city => city.city === location?.city)?.city
-
-        newCity ? setSelectedCity(newCity) : "";
         setIsLocationsMounted(true);
     }
 
@@ -269,7 +267,7 @@ export function CalendarClient({ initialLocations, initialCities, initialStartDa
     }
 
     return (
-        <section>
+        <section id="clase">
             <SectionHeader text="Calendar" />
             <div
                 className="w-full mt-16 flex flex-col gap-4 items-center">
@@ -334,11 +332,11 @@ export function CalendarClient({ initialLocations, initialCities, initialStartDa
                                                                         {stackIds.map(stackId => {
                                                                             const stackLength = stacks[stackId].sessionIds.length
                                                                             if (stackLength > 6) {
-                                                                                return <StackLayout stack={stacks[stackId]} sessions={sessions} rowHeight={rowHeight} hoursGap={hoursGap} hours={hours} classGap={classGap} dayCellWidth={dayCellWidth} index={index} selectedClass={selectedClass} setSelectedClass={setSelectedClass} />
+                                                                                return <StackLayout key={stackId} stack={stacks[stackId]} sessions={sessions} rowHeight={rowHeight} hoursGap={hoursGap} hours={hours} classGap={classGap} dayCellWidth={dayCellWidth} index={index} selectedClass={selectedClass} setSelectedClass={setSelectedClass} />
                                                                             }
                                                                             else {
                                                                                 return stacks[stackId].sessionIds.map((sessionId, sessionIndex) => (
-                                                                                    <SessionLayout session={sessions[sessionId]} rowHeight={rowHeight} hoursGap={hoursGap} hours={hours} classGap={classGap} dayCellWidth={dayCellWidth} index={sessionIndex} stackLength={stackLength} selectedClass={selectedClass} setSelectedClass={setSelectedClass} />
+                                                                                    <SessionLayout key={sessionId} session={sessions[sessionId]} rowHeight={rowHeight} hoursGap={hoursGap} hours={hours} classGap={classGap} dayCellWidth={dayCellWidth} index={sessionIndex} stackLength={stackLength} selectedClass={selectedClass} setSelectedClass={setSelectedClass} />
                                                                                 ))
                                                                             }
                                                                         })}

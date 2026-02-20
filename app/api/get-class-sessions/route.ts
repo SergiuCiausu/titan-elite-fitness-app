@@ -1,4 +1,4 @@
-import { Class, ClassSession, GroupedClass } from "@/lib/constants/class-sessions-type";
+import { Class } from "@/lib/constants/class-sessions-type";
 import { createClient } from "@/lib/supabase/server";
 import { NextRequest, NextResponse } from "next/server";
 

@@ -8,6 +8,8 @@ import { createClient } from "@/lib/supabase/server";
 import { fetchLocations } from "@/lib/functions/fetch-locations";
 import { AntrenoriClient } from "./components/client-antrenori";
 
+export const profesieAntrenori: {[key: string]: string} = {"Andrei Munteanu": "Forță & hipertrofie musculară", "Ana-Maria Țîrlea":"Antrenamente pentru femei, tonifiere & glute focus", "Ioana Dobre":"Mobility, stretching, recuperare posturală", "Radu Neagu":"Functional training & performanță sportivă", "Mihai Rusu":"Powerlifting & ridicări olimpice", "Alexandra Turcu":"Pilates, echilibru, siluetă & mobilitate", "Cristina Manolache":"Yoga, mindfulness, respirație & mobilitate", "Vlad Popescu":"Cardio intens, ardere calorică & condiționare"}
+
 export async function Antrenori() {
 
     const supabase = await createClient();
@@ -16,8 +18,6 @@ export async function Antrenori() {
 
     const initialLocations = await fetchLocations(supabase);
     const initialCities = await fetchCities(supabase);
-
-    const profesieAntrenori: {[key: string]: string} = {"Andrei Munteanu": "Forță & hipertrofie musculară", "Ana-Maria Țîrlea":"Antrenamente pentru femei, tonifiere & glute focus", "Ioana Dobre":"Mobility, stretching, recuperare posturală", "Radu Neagu":"Functional training & performanță sportivă", "Mihai Rusu":"Powerlifting & ridicări olimpice", "Alexandra Turcu":"Pilates, echilibru, siluetă & mobilitate", "Cristina Manolache":"Yoga, mindfulness, respirație & mobilitate", "Vlad Popescu":"Cardio intens, ardere calorică & condiționare"}
 
     return (
         <AntrenoriClient initialAntrenori={initialAntrenori} initialCities={initialCities} initialLocations={initialLocations} profesieAntrenori={profesieAntrenori} />

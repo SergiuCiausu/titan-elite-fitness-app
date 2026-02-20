@@ -74,13 +74,13 @@ export function SliderWrapper({ children, title }: SliderWrapperProps) {
                 <div className={`${childrenArray.length > 6 ? "" : "hidden"} w-full h-full absolute top-0 left-0 z-30 pointer-events-none bg-[image:var(--slider-gradient)]`} />
 
                 {currentIndex > 0 && (
-                    <button onClick={() => shiftTo(currentIndex - 1)} className="w-10 h-10 absolute top-1/2 -translate-y-1/2 left-16 bg-accent z-40 rounded-2xl text-background flex items-center justify-center cursor-pointer">
+                    <button onClick={() => shiftTo(currentIndex - 1)} className="w-10 h-10 absolute top-1/2 -translate-y-1/2 left-16 bg-accent z-30 rounded-2xl text-background flex items-center justify-center cursor-pointer">
                         <ChevronLeft strokeWidth={3}/>
                     </button>
                 )}
                 
                 {currentIndex < itemCount - subtract && (
-                    <button onClick={() => shiftTo(currentIndex + 1)} className="w-10 h-10 absolute top-1/2 -translate-y-1/2 right-16 bg-accent z-40 rounded-2xl text-background flex items-center justify-center cursor-pointer">
+                    <button onClick={() => shiftTo(currentIndex + 1)} className="w-10 h-10 absolute top-1/2 -translate-y-1/2 right-16 bg-accent z-30 rounded-2xl text-background flex items-center justify-center cursor-pointer">
                         <ChevronRight strokeWidth={3}/>
                     </button>
                 )}

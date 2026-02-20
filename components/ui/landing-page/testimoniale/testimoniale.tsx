@@ -37,7 +37,7 @@ export async function Testimoniale() {
 
     const members = testimonials.map(testimonial => testimonial.user_id);
 
-    const { data, error } = await supabase.from("Subscriptions").select("user_id, start_date, end_date").in("user_id", members);
+    const { data, error } = await supabase.from("Subscriptions_testimonials").select("user_id, start_date, end_date").in("user_id", members);
 
     let memberSubscriptions: Subscription[]  = [];
 

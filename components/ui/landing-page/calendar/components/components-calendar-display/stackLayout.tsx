@@ -77,7 +77,7 @@ export function StackLayout({ stack, sessions, rowHeight, hoursGap, classGap, ho
                     top: rowHeight + hoursGap - classGap * 2,
                 }}>
                 {stack.sessionIds.map(sessionId => (
-                    <StackSessionLayout session={sessions[sessionId]} rowHeight={rowHeight} hoursGap={hoursGap} dayCellWidth={dayCellWidth} classGap={classGap} selectedStackClass={selectedStackClass} setSelectedStackClass={setSelectedStackClass} />
+                    <StackSessionLayout key={sessionId} session={sessions[sessionId]} rowHeight={rowHeight} hoursGap={hoursGap} dayCellWidth={dayCellWidth} classGap={classGap} selectedStackClass={selectedStackClass} setSelectedStackClass={setSelectedStackClass} />
                 ))}
             </div> 
             : ""}

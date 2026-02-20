@@ -1,0 +1,1 @@
+export const romaniaStartingCoords = { lng: 24.97, lat: 45.97 }

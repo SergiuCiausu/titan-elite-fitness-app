@@ -1,0 +1,1 @@
+export const errorLayoutSettings = "w-full h-screen flex flex-col items-center justify-center gap-4"

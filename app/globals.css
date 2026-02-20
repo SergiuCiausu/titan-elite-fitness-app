@@ -10,6 +10,10 @@
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body[data-radix-dropdown-menu-open] {
   overflow: auto !important;
 }
@@ -73,6 +77,13 @@ body[data-radix-dropdown-menu-open] {
     --cycling: 132.79, 85.12%, 42.16%;
     --slider-gradient: linear-gradient(to right, rgba(255, 255, 255, 0.4) 0%, transparent 10%, transparent 90%, rgba(255, 255, 255, 0.4) 100%);
     --footer-bg: 0, 0%, 12.16%;
+    --dashboard-sidebar-content-width: 216px;
+    --dashboard-sidebar-padding: 32px;
+    --dashboard-main-container-padding: 64px;
+    --dashboard-sidebar-link-padding: 4px 16px;
+    --positive: 132.79, 85.12%, 42.16%;
+    --neutral: 24.91, 100%, 58.43%;
+    --negative: 345.17, 87.25%, 40%;
   }
   .dark {
     --header-font: "Anton",
@@ -131,6 +142,13 @@ body[data-radix-dropdown-menu-open] {
     --cycling: 132.79, 70.83%, 37.65%;
     --slider-gradient: linear-gradient(to right, hsl(var(--background)) 0%, transparent 10%, transparent 90%, hsl(var(--background)) 100%);
     --footer-bg: var(--card);
+    --dashboard-sidebar-content-width: 216px;
+    --dashboard-sidebar-padding: 32px;
+    --dashboard-main-container-padding: 64px;
+    --dashboard-sidebar-link-padding: 4px 16px;
+    --positive: 132.79, 70.83%, 37.65%;
+    --neutral: 24.91, 100%, 58.43%;
+    --negative: 345.17, 87.25%, 40%;
   }
   .maplibregl-popup-content {
     @apply bg-transparent! shadow-none! p-0! rounded-none!;
@@ -261,4 +279,20 @@ select {
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
+}
+
+@keyframes scale-in {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.animate-scale-in {
+  animation: scale-in 0.4s ease-out forwards;
 }

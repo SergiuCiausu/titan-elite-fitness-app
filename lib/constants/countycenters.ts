@@ -23,7 +23,7 @@ export const countyCenters: Record<string, { lat: number; lng: number }> = {
   "Hunedoara": { lat: 45.75, lng: 22.90 },     // Deva
   "Ialomița": { lat: 44.62, lng: 27.53 },      // Slobozia
   "Iași": { lat: 47.16, lng: 27.60 },          // Iași
-  "Ilfov": { lat: 44.50, lng: 26.10 },         // Otopeni (near Bucharest)
+  "Ilfov": { lat: 44.43, lng: 26.10 },         // Otopeni (near Bucharest)
   "Maramureș": { lat: 47.66, lng: 23.58 },     // Baia Mare
   "Mehedinți": { lat: 44.90, lng: 22.66 },     // Drobeta-Turnu Severin
   "Mureș": { lat: 46.54, lng: 24.56 },         // Târgu Mureș

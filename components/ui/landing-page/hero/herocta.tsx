@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Button } from "../../button";
 import { ChevronRight } from "lucide-react";
 
@@ -22,17 +23,22 @@ export function HeroCTA() {
                         </div>
                         <div
                             className="md:hidden">
-                            <Button variant={"outline"} size={"lg"}>
-                                <span className="!font-normal">Vezi oferte</span>
-                                <ChevronRight />
-                            </Button>
+                            <Link href="/#abonamente">
+                                <Button variant={"outline"} size={"lg"}>
+                                    <span className="!font-normal">Vezi oferte</span>
+                                    <ChevronRight />
+                                </Button>
+                            </Link>
+                            
                         </div>
                         <div
                             className="max-md:hidden">
-                            <Button variant={"outline"} size={"xl"}>
-                                <span className="!font-normal">Vezi oferte</span>
-                                <ChevronRight />
-                            </Button>
+                            <Link href="/#abonamente">
+                                <Button variant={"outline"} size={"xl"}>
+                                    <span className="!font-normal">Vezi oferte</span>
+                                    <ChevronRight />
+                                </Button>
+                            </Link>
                         </div>
                     
                 </div>

@@ -1,0 +1,1 @@
+export type EntryAttemptsResultEnum = "pending" | "success" | "failed" | "blocked";

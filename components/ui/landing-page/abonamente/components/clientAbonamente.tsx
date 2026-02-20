@@ -42,6 +42,7 @@ export function ClientAbonamente({ abonamente }: { abonamente: SubscriptionPlan[
 
     return (
             <div
+                id="abonamente"
                 className="w-full h-fit">
                 <SectionHeader text="Abonamente" />
                         <div
@@ -117,6 +118,7 @@ export function ClientAbonamente({ abonamente }: { abonamente: SubscriptionPlan[
                                                 }}>
                                                 {abonament.landing_page_benefits!.map((benefit, benefitIndex) => (
                                                     <div
+                                                        key={`benefit-${benefitIndex}`}
                                                         className="flex gap-1">
                                                             <div
                                                                 className="w-4 h-4">

@@ -71,6 +71,7 @@ export function EchipamenteFacilitati(){
 
     return (
         <div
+            id="aparate"
             className="w-full bg-card flex justify-center pb-8">
             <div
                 className="flex w-[var(--content-width)] justify-center gap-6">

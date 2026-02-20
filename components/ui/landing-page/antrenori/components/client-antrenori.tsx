@@ -6,17 +6,23 @@ import { h2Settings } from "@/lib/constants/classes-tw/h2-settings";
 import { h3Settings } from "@/lib/constants/classes-tw/h3-settings";
 import { Location } from "@/lib/constants/location-type";
 import { Coach } from "@/lib/functions/get-coaches";
-import { ExternalLink, MapPin, SquareArrowOutUpRight } from "lucide-react";
-import { useEffect, useState } from "react";
+import { MapPin, SquareArrowOutUpRight } from "lucide-react";
+import { Suspense, useEffect, useState } from "react";
 import { CitySelector } from "../../components/selectcity";
 import { LocationSelector } from "../../components/locationselector";
 import { useTheme } from "next-themes";
+import { CoachClassSpecialties } from "./client-antrenor-components/coach-class-specialties";
+import { AntrenorPopup } from "./client-antrenor-components/antrenor-popup";
 
 export function AntrenoriClient({ initialLocations, initialCities, initialAntrenori, profesieAntrenori }: { initialLocations: Location[], initialCities: City[], initialAntrenori: Coach[], profesieAntrenori: {[key: string]: string} }){
 
     const [antrenori, setAntrenori] = useState<Coach[]>(initialAntrenori);
     const [selectedCity, setSelectedCity] = useState("all");
     const [selectedLocation, setSelectedLocation] = useState("all");
+    const [openedPopup, setOpenedPopup] = useState({
+        id: "",
+        name: ""
+    });
 
     const { theme, resolvedTheme } = useTheme();
     const [isComponentMounted, setIsComponentMounted] = useState(false);
@@ -60,8 +66,13 @@ export function AntrenoriClient({ initialLocations, initialCities, initialAntren
         }
     }
 
+    const handleAntrenorPopupOpen = (antrenor: Coach, fullName: string) => {
+        setOpenedPopup({id: antrenor.user_id, name: fullName})
+    }
+
     return (
         <div
+            id="antrenori"
             className="bg-card">
             <div
                 className="w-full relative flex flex-col items-center">
@@ -94,6 +105,7 @@ export function AntrenoriClient({ initialLocations, initialCities, initialAntren
                             {antrenori.length > 0 ? antrenori.map(antrenor => {
 
                                 const fullName = `${antrenor.first_name} ${antrenor.last_name}`
+                                const locationName = `${antrenor.Tenant_coaches[0].Tenants.name}, ${antrenor.Tenant_coaches[0].Tenants.city}`
 
                                 return (
                                     <div
@@ -104,7 +116,7 @@ export function AntrenoriClient({ initialLocations, initialCities, initialAntren
                                             height: cardHeight,
                                         }}>
                                             <div>
-                                                <img src={`/images/coaches/${antrenor.first_name.toLowerCase()}-${antrenor.last_name.toLowerCase()}.jpg`} alt="" className="rounded-[20px]" />
+                                                <img src={`/images/coaches/${antrenor.first_name.toLowerCase()}-${antrenor.last_name.toLowerCase()}.jpg`} alt={`${antrenor.first_name.toLowerCase()}-${antrenor.last_name.toLowerCase()} image`} className="rounded-[20px]" />
                                             </div>
                                             <div
                                                 className="p-8 rounded-t-[20px] rounded-b-2xl flex flex-col justify-between h-full">
@@ -119,28 +131,20 @@ export function AntrenoriClient({ initialLocations, initialCities, initialAntren
                                                     </div>
                                                     <div
                                                         className="flex gap-1 flex-wrap items-center">
-                                                        {antrenor.Coach_specialties.map(specialty => {
-                                                            return (
-                                                                <div
-                                                                    key={specialty.class_type_id}
-                                                                    className="flex items-center gap-1 mx-1">
-                                                                    <img src={`/icons/classes/${specialty.Class_types.icon}.svg`} alt={specialty.Class_types.icon} className="w-4 h-4" />
-                                                                    <p className="text-[13px]" style={{ color: `hsl(var(--${specialty.Class_types.name.split(" ").join("").toLowerCase()}))` }}>{specialty.Class_types.name}</p>
-                                                                </div>
-                                                            )
-                                                        })}
+                                                        <CoachClassSpecialties coachSpecialties={antrenor.Coach_specialties} />
                                                     </div>
                                                     <div
                                                         className="flex flex-col gap-4">
                                                         <div
                                                             className="flex flex-col">
                                                             <p className="text-primary-foreground">100+ transformări</p>
-                                                            <div
-                                                                className="text-accent hover:text-accent-hover transition-colors duration-150 flex items-center gap-1 underline underline-offset-4">
+                                                            <button
+                                                                className="text-accent hover:text-accent-hover transition-colors duration-150 flex items-center gap-1 underline underline-offset-4"
+                                                                onClick={() => handleAntrenorPopupOpen(antrenor, fullName)}>
                                                                 <MapPin strokeWidth={2.5} className="w-4 h-4 3xl:w-6 3xl:h-6" />
-                                                                <p className="select-none cursor-pointer">{antrenor.Tenant_coaches.length} {antrenor.Tenant_coaches.length === 1 ? "locație" : "locații"}</p>
+                                                                <p className="select-none cursor-pointer">{antrenor.Tenant_coaches.length === 1 ? locationName : `${antrenor.Tenant_coaches.length} locații`}</p>
                                                                 <SquareArrowOutUpRight strokeWidth={2.5} className="w-4 h-4" />
-                                                            </div>
+                                                            </button>
                                                         </div>
                                                         <button
                                                             className="bg-primary text-primary-foreground hover:bg-primary-hover transition-colors duration-150 rounded-2xl w-full py-4 uppercase">
@@ -166,7 +170,7 @@ export function AntrenoriClient({ initialLocations, initialCities, initialAntren
                         }
                     </div>
             </div>
-            
+            {openedPopup.id !== "" ? <AntrenorPopup antrenor={antrenori.find(antrenor => antrenor.user_id === openedPopup.id)! } profesie={profesieAntrenori[openedPopup.name]} setOpenedPopup={setOpenedPopup} /> : ""}
         </div>
     )
 }
