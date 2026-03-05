@@ -5,7 +5,7 @@ export async function getUserClasses({ supabase, user_id, start_date, end_date }
     
     const query = supabase
     .from("Payments")
-    .select("id, Purchases!inner(Class_purchases!inner(Class_assignments!inner(Coaches!inner(first_name, last_name, name_unaccent), Class_sessions!inner(starts_at, ends_at, date, Class_types!inner(name, icon, duration_default), Tenants!inner(name, province, city)))))")
+    .select("id, status, Purchases!inner(Class_purchases!inner(Class_assignments!inner(Coaches!inner(first_name, last_name, name_unaccent), Class_sessions!inner(starts_at, ends_at, date, Class_types!inner(name, icon, duration_default), Tenants!inner(name, province, city)))))")
     .eq("user_id", user_id);
 
     if (start_date) {
@@ -18,7 +18,7 @@ export async function getUserClasses({ supabase, user_id, start_date, end_date }
 
     const { data, error } = await query as unknown as { data: ClassOnDashboard[], error: any };
 
-    if (error || data.length === 0) return null;
+    if (error || data.length === 0 || data[0].status !== "success") return null;
 
     const processedData = data.map(payment => {
         const purchase = payment.Purchases;

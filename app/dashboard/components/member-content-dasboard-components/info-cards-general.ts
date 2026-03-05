@@ -81,11 +81,6 @@ export let InfoCardsGeneral: Record<string, InfoLayout[]> = {
                 infoContent: "",
             },
             {
-                infoLabel: "muschi",
-                icon: "/icons/general/muscles-worked",
-                infoContent: "",
-            },
-            {
                 infoLabel: "durata",
                 icon: Clock8,
                 infoContent: "",

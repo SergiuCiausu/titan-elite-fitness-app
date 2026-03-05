@@ -51,6 +51,7 @@ export type Class = {
 
 export type ClassOnDashboard = {
     id: UUID;
+    status: string;
     Purchases: {
         Class_purchases: {
             Class_assignments: {
@@ -73,6 +74,34 @@ export type ClassOnDashboard = {
                         province: string;
                         city: string;
                     }
+                }
+            }
+        }
+    }
+}
+
+export type TrainingOnDashboard = {
+    id: UUID;
+    status: string;
+    Purchases: {
+        Training_purchases: {
+            Training_program_sessions: {
+                Coaches: {
+                    first_name: string;
+                    last_name: string;
+                    name_unaccent: string;
+                };
+                starts_at: string;
+                ends_at: string;
+                date: string;
+                Tenants: {
+                    name: string;
+                    province: string;
+                    city: string;
+                }
+                Training_programs: {
+                    name: string;
+                    icon: string;
                 }
             }
         }
