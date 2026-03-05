@@ -6,7 +6,7 @@ import { InfoCardsGeneral } from "../info-cards-general";
 import { daysOfTheWeek } from "@/lib/constants/days-of-the-week";
 import { hydrateClassStacks } from "@/lib/functions/hydrate-class-stacks";
 
-async function urmatorulAntrenamentRezervat(supabase: SupabaseClient, user_id: string) {
+export async function urmatorulAntrenamentRezervatPrepareInfoCard(supabase: SupabaseClient, user_id: string) {
     const now = new Date();
     const today = now.toISOString();
     const todayDate = format(now, "yyyy-MM-dd");
@@ -38,7 +38,7 @@ async function urmatorulAntrenamentRezervat(supabase: SupabaseClient, user_id: s
     const durataMinute = `${isClasaSi ? "și " : ""}${isClasaMinute ? `${clasaMinute} ${clasaMinute % 60 === 1 ? "minut" : "minute"}` : ""}`
     const durataClasa = `${durataOre} ${durataMinute}`
 
-    InfoCardsGeneral["Următorul antrenament"] = InfoCardsGeneral["Următoarea clasă rezervată"].map(card => ({
+    InfoCardsGeneral["Următorul antrenament"] = InfoCardsGeneral["Următorul antrenament"].map(card => ({
         ...card,
         info: card.info.map(info => (
             info.infoLabel === "antrenament"

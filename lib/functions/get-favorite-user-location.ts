@@ -9,7 +9,7 @@ export async function getFavoriteUserLocation(supabase: SupabaseClient, user_id:
     if (error || data.length === 0) return null;
 
     const favoriteLocations = data.reduce<Record<string, number>>((acc, tenant) => {
-        acc[tenant.Tenants[0].name] = (acc[tenant.Tenants[0].name] ?? 0) + 1
+        acc[tenant?.Tenants[0]?.name] = (acc[tenant?.Tenants[0]?.name] ?? 0) + 1
         return acc
     }, {})
 

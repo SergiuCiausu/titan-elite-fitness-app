@@ -2,6 +2,7 @@ import { NavMemberContentDashboard } from "./navMemberContentDashboard";
 import { createClient } from "@/lib/supabase/server";
 import { prepareInfoCardsGeneral } from "./prepare-info-cards-general";
 import { authorizeUser } from "@/lib/functions/authorize-user";
+import { InfoCardsGeneral } from "./info-cards-general";
 
 export async function MainMemberContentDashboard() {
     
@@ -12,9 +13,11 @@ export async function MainMemberContentDashboard() {
 
     const { user, subscription } = result;
 
-    const subscriptionName = subscription ? subscription[0].Subscription_plans[0].name : null;
+    const subscriptionName = subscription ? subscription[0]?.Subscription_plans[0]?.name : null;
 
-    const cards = await prepareInfoCardsGeneral(supabase, user.id, subscriptionName);
+    await prepareInfoCardsGeneral(supabase, user.id, subscriptionName);
+
+    console.log("ia: ", InfoCardsGeneral);
 
     return (
         <div

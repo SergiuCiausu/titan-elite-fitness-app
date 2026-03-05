@@ -12,6 +12,8 @@ async function getUserRole(supabase: SupabaseClient, user: string) {
 
     if (error) throw error;
 
+    console.log("ce: ", data.role);
+
     return data.role;
 }
 
